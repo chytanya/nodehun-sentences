@@ -70,7 +70,8 @@ function checkWord(nodehun, word, callback) {
 }
 
 function trimWord(word) {
-    var matches = word.match(/^[^\wÀ-ÿÇ-į]*([\wÀ-ÿÇ-į.]+)*[^\wÀ-ÿÇ-į]*$/i);
+    // https://unicode-table.com/en/#01C0
+    var matches = word.match(/^[^\w\u00C0-\u024F]*([\w\u00C0-\u024F.]+)*[^\w\u00C0-\u024F]*$/i);
     word = (matches && matches[1]) || '';
 
     return word.replace(/^\d+$/, '');
