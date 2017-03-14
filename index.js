@@ -71,9 +71,12 @@ function checkWord(nodehun, word, callback) {
 
 function trimWord(word) {
     // https://unicode-table.com/en/#01C0
-    var matches = word.match(/^[^\w\u00C0-\u024F]*([\w\u00C0-\u024F.]+)*[^\w\u00C0-\u024F]*$/i);
+    // Accent characters and Umlats - \u00C0-\u024F
+    // Arabic - \u0621-\u064A
+    // Hebrew - \u0591-\u05F4
+    // Thai - \u0E00-\u0E7F
+    var matches = word.match(/^[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*([\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F.]+)*[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*$/i);
     word = (matches && matches[1]) || '';
-
     return word.replace(/^\d+$/, '');
 }
 
