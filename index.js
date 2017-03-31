@@ -77,7 +77,7 @@ function trimWord(word) {
     // Thai - \u0E00-\u0E7F
     var matches = word.match(/^[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*([\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F.]+)*[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*$/i);
     word = (matches && matches[1]) || '';
-    return word.replace(/^\d+$/, '');
+    return word.replace(/\d+|\.+$/, '');
 }
 
 function splitWord(word) {
