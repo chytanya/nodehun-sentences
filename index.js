@@ -82,7 +82,8 @@ function trimWord(word) {
 
     var matches = word.match(/^[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF]*([\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF.]+)*[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF]*$/i);
     word = (matches && matches[1]) || '';
-    return word.replace(/\d+|\.+$/, '');
+    // double check for abbreviations (i.e., e.g.) before removing trailing "."
+    return /\b(\w\.\w\.)/.test(word) ? word : word.replace(/\d+|\.+$/, '');
 }
 
 function splitWord(word) {
