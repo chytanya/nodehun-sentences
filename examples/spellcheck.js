@@ -10,8 +10,8 @@ var hunspell = new Nodehun(
 
 var text = 'This is some text we want to ceck for typos';
 
-spellcheck(hunspell, text, function(err, typos) {
-    console.log(typos);
+spellcheck(hunspell, text, function (err, typos) {
+    console.log("WithOUT suggestions:", typos);
 
     /* jshint -W030, eqeqeq: false */
     typos == [{
@@ -30,3 +30,7 @@ spellcheck(hunspell, text, function(err, typos) {
         }]
     }];
 });
+
+spellcheck(hunspell, text, function(err, typos) {
+    console.log("With suggestions:", typos);
+}, { spellCheckOnly: true });

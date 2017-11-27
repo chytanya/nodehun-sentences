@@ -6,8 +6,8 @@ var async    = require('async');
 
 module.exports = checkChunk;
 
-function checkChunk(nodehun, chunk, callback) {
-    if (!nodehun || typeof nodehun.spellSuggestions !== 'function') {
+function checkChunk(nodehun, chunk, callback, options={}) {
+    if (!nodehun || typeof nodehun.spellSuggestions !== 'function' || typeof nodehun.isCorrect !== 'function') {
         return callback(new TypeError(
             'First argument to nodehun-sentences must be an instance of nodehun'
         ));
@@ -22,7 +22,7 @@ function checkChunk(nodehun, chunk, callback) {
         return i && i.length > 1;
     });
 
-    var wordCheck = partial(checkWord)(nodehun);
+    var wordCheck = partial(checkWord,nodehun, options);
     async.map(words, wordCheck, function(err, results) {
         if (err) {
             return callback(err);
@@ -56,18 +56,32 @@ function populatePosition(text, entry) {
     return entry;
 }
 
-function checkWord(nodehun, word, callback) {
-    nodehun.spellSuggestions(word, function(err, correct, suggestions) {
-        if (err || correct) {
-            return callback(err);
-        }
+function checkWord(nodehun, options = {}, word, callback) {
+    if (options.suggestions) {
+        nodehun.spellSuggestions(word, function (err, correct, suggestions) {
+            if (err || correct) {
+                return callback(err);
+            }
 
-        callback(undefined, {
-            word: word,
-            suggestions: suggestions
+            callback(undefined, {
+                word: word,
+                suggestions: suggestions
+            });
         });
-    });
+    } else {
+        nodehun.isCorrect(word, function (err, correct, origWord) {
+            if (err || correct) {
+                return callback(err);
+            }
+
+            callback(undefined, {
+                word: origWord,
+                correct: correct
+            });
+        });
+    }
 }
+
 
 function trimWord(word) {
     // https://unicode-table.com/en/#01C0
