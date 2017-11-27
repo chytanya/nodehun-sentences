@@ -85,11 +85,16 @@ function checkWord(nodehun, options = {}, word, callback) {
 
 function trimWord(word) {
     // https://unicode-table.com/en/#01C0
+    // http://jrgraphix.net/research/unicode_blocks.php
+    
     // Accent characters and Umlats - \u00C0-\u024F
     // Arabic - \u0621-\u064A
     // Hebrew - \u0591-\u05F4
     // Thai - \u0E00-\u0E7F
-    var matches = word.match(/^[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*([\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F.]+)*[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F]*$/i);
+    // Greek = \u0370-\u03FF
+    // Greek Extended = \u1F00-\u1FFF
+
+    var matches = word.match(/^[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF]*([\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF.]+)*[^\w\u00C0-\u024F\u0591-\u05F4\u0621-\u064A\u0E00-\u0E7F\u0370-\u03FF\u1F00-\u1FFF]*$/i);
     word = (matches && matches[1]) || '';
     // double check for abbreviations (i.e., e.g.) before removing trailing "."
     return /\b(\w\.\w\.)/.test(word) ? word : word.replace(/\d+|\.+$/, '');
